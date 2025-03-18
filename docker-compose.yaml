@@ -1,0 +1,46 @@
+services:
+  web:
+    image: denoland/deno:2.2.3
+    env_file:
+      - path: ./env/web.env
+    ports:
+      - 8000:8000
+
+    working_dir: /app
+    command: >
+      sh -c "deno task start"
+    volumes:
+      - ./:/app
+    depends_on:
+      postgres:
+        condition: service_started
+  postgres:
+    image: postgres:17.4
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: postgres
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./init/postgres-init.sh:/docker-entrypoint-initdb.d/postgres-init.sh:ro
+    # depends_on:
+    #   mongo:
+    #     condition: service_started
+    # mongo:
+    #   image: mongo
+    #   ports:
+    #     - 27017:27017
+    #   healthcheck:
+    #     test: echo "try { rs.status() }  catch (err) {  rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}) } " | mongosh --port 27017 -u sa -p secret --authenticationDatabase admin
+    #     interval: 5s
+    #     timeout: 15s
+    #     start_period: 15s
+    #     retries: 10
+    #   command: [ "--replSet", "rs0", "--bind_ip_all", "--keyFile", "/dockerkeyfile/keyfile.key" ]
+    #   env_file:
+    #     - path: ./env/mongo.env
+    #   volumes:
+    #     - ./data/db:/data/db
+    #     - ./init/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    #     - ./init/mongo/keyfile.key:/dockerkeyfile/keyfile.key
