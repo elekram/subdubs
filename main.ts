@@ -20,17 +20,28 @@ app.use(async (ctx, next) => {
   ctx.response.headers.set('X-Response-Time', `${ms}ms`)
 })
 
+app.use(async (ctx, next) => {
+  try {
+    await ctx.send({
+      root: `./static`,
+    })
+  } catch {
+    await next()
+  }
+  await next()
+})
+
 router.get('/', (ctx) => {
   console.log(ctx.request.ip)
-  ctx.response.body = GetHome
+  ctx.response.body = GetHome()
 })
+
+app.use(router.allowedMethods())
+app.use(router.routes())
 
 const port = cfg.port
 const cert = await Deno.readTextFile(cfg.cert)
 const key = await Deno.readTextFile(cfg.key)
-
-app.use(router.routes())
-app.use(router.allowedMethods())
 
 console.log(`Server running at http://localhost:${port}`)
 app.listen({ port, cert, key })
