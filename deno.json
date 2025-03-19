@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "start": "deno fmt main.ts;deno run -A --watch main.ts"
+    "start": "deno run -A --watch main.ts"
   },
   "imports": {
     "@oak/oak": "jsr:@oak/oak@^17.1.4"
