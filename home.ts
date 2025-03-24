@@ -1,4 +1,12 @@
+import { format } from '@std/datetime'
+
 export function GetHome() {
+  const dtf = new Intl.DateTimeFormat('en-AU', {
+    dateStyle: 'full',
+    timeStyle: 'short',
+    timeZone: 'Australia/Melbourne',
+  }).format(new Date())
+
   return `<!doctype html>
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -17,16 +25,16 @@ export function GetHome() {
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
         <img
-          width="200"
+          width="250"
           src="/img/CHELTSEC-LOGO-RGB-COLOUR-POSITIVE.SVG"
           alt="csc-logo" />
       </a>
       <ul class="nav nav-pills">
-        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+        <div class="container d-flex h-100">
+        <div class="row justify-content-center align-self-center">
+          <h2>${dtf}</h2>
+        </div>
+        </div>
       </ul>
     </header>
   </div>

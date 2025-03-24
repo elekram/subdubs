@@ -3,7 +3,8 @@
     "start": "deno run -A --watch main.ts"
   },
   "imports": {
-    "@oak/oak": "jsr:@oak/oak@^17.1.4"
+    "@oak/oak": "jsr:@oak/oak@^17.1.4",
+    "@std/datetime": "jsr:@std/datetime@^0.225.3"
   },
   "fmt": {
     "semiColons": false,
