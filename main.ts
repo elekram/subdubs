@@ -2,22 +2,16 @@ import { Application } from 'jsr:@oak/oak/application'
 import { Router } from 'jsr:@oak/oak/router'
 import cfg from './config/config.ts'
 import { GetHome } from './home.ts'
+import { Upload } from './upload.ts'
 
 const router = new Router()
 const app = new Application()
 
 app.use(async (ctx, next) => {
+  if (cfg.isDevEnv) {
+    console.log(`${ctx.request.method} ${ctx.request.url}`)
+  }
   await next()
-  const rt = ctx.response.headers.get('X-Response-Time')
-  console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`)
-})
-
-// Timing
-app.use(async (ctx, next) => {
-  const start = Date.now()
-  await next()
-  const ms = Date.now() - start
-  ctx.response.headers.set('X-Response-Time', `${ms}ms`)
 })
 
 app.use(async (ctx, next) => {
@@ -28,7 +22,11 @@ app.use(async (ctx, next) => {
   } catch {
     await next()
   }
-  await next()
+})
+
+router.get('/upload', (ctx) => {
+  console.log(ctx.request.ip)
+  ctx.response.body = Upload()
 })
 
 router.get('/', (ctx) => {
