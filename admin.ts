@@ -1,4 +1,4 @@
-export function Upload() {
+export function Admin() {
   return `<!doctype html>
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -23,7 +23,7 @@ export function Upload() {
             <div class="div-left">Data Uploader</div>
           </div>
           <div class="card-body">
-          <form id="csvUploadForm" name="csvUploadForm" enctype='multipart/form-data' hx-post="/upload-csvs">
+          <form id="csvUploadForm" name="csvUploadForm" method="post" enctype='multipart/form-data' action="/upload-csv">
             <label for="passwordInput">Upload Key</label>
             <input id="passwordInput" name="passwordInput" type="password">
             </br></br>
@@ -35,10 +35,11 @@ export function Upload() {
                 <span id="fileLabel" class="ms-2">No file(s) selected</span>
                 <input type="file" id="formFile" name="attachments" accept="text/csv" class="d-none" />
               </div>
-            </form>
-            <button type="button" hx-get="/upload-csvs" class="btn btn-primary float-end" data-bs-toggle="modal"
+            <button type="submit" class="btn btn-primary float-end" data-bs-toggle="modal"
               data-bs-target="#app-modal">Upload CSV Files
             </button>
+            </form>
+
           </div>
         </div>
       </div>
