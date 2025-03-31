@@ -19,27 +19,26 @@ router
     ctx.response.body = Admin()
   })
   .post('/upload-csv', async (ctx) => {
-    // const theBody: Body = await ctx.request.body.formData()
-    if (ctx.request.hasBody) {
-      const body = await ctx.request.body.arrayBuffer()
-      console.log(new TextDecoder().decode(body))
+    if (!ctx.request.hasBody) {
+      console.log('no body cuz')
     }
 
-    // const form: FormData = await theBody.formData()
-    // const theFile: File = form.get('file') as File
-    // const theBody = await ctx.request.body.formData()
-    // // const file = theBody.
-    // console.log(theBody)
-    // // const form: FormData = await theBody.formData()
-    // const theFile: File = theBody.get('attachments') as File
-    // console.log(theFile)
-    // const destPath = `${config.UPLOAD_PATH}${theFile.name}`
-    // const fileData = await theFile.stream()
-    // console.log(fileData)
+    const reqBody = await ctx.request.body.formData()
+    for (const pair of reqBody.entries()) {
+      const field = pair[0], val = pair[1]
+      if (val instanceof File) {
+        console.log('FILE =>', field, val)
+        const f = val.name
+        const destPath = `${Deno.cwd()}/uploads/${f}`
+        const data = await val.arrayBuffer()
+        console.log(data)
+        await Deno.writeFile(`${destPath}`, await new Uint8Array(data))
+      } else {
+        console.log('FIELD:', field, val)
+      }
+    }
 
-    // response.body = `Uploaded file size: ${theFile.size}`
     ctx.response.body = 'submitted'
-    // UploadCsv(ctx)
   })
 
 export default router
