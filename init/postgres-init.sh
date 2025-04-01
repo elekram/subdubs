@@ -6,9 +6,5 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	CREATE DATABASE docker;
 	GRANT ALL PRIVILEGES ON DATABASE docker TO docker;
 	\c docker
-	CREATE TABLE docker(
-  brand VARCHAR(255),
-  model VARCHAR(255),
-  year INT
-	);
+	CREATE TABLE CsvFiles (fileName text, file bytea);
 EOSQL

@@ -29,5 +29,5 @@ const port = cfg.port
 const cert = await Deno.readTextFile(cfg.cert)
 const key = await Deno.readTextFile(cfg.key)
 
-console.log(`Server running at http://localhost:${port}`)
+console.log(`🔥 Server Running on Port:${port} 🏄‍♀️`)
 app.listen({ port, cert, key })
