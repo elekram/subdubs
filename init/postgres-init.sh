@@ -6,5 +6,11 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	CREATE DATABASE docker;
 	GRANT ALL PRIVILEGES ON DATABASE docker TO docker;
 	\c docker
-	CREATE TABLE CsvFiles (fileName text, file bytea);
+	CREATE TABLE csv_files (
+		id serial PRIMARY KEY,
+		file_name text, 
+		file bytea,
+		upload_date timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+	);
+	SET timezone = 'Australia/Sydney';
 EOSQL

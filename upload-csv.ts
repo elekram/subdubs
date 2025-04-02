@@ -40,13 +40,15 @@ export async function UploadCsv(ctx: any) {
 //   return users
 // }
 
-async function StoreCsv(fileName: string, csv: any) {
-  const users = await sql`
-    insert into CsvFiles
-      (fileName, file)
+async function StoreCsv(fileName: string, data: Uint8Array) {
+  const result = await sql`
+    insert into csv_files
+      (id, file_name, file)
     values
-      (${fileName}, ${csv})
-    returning fileName, file
+      (${1}, ${fileName}, ${data})
+    ON CONFLICT (id) DO UPDATE
+    SET file_name = ${fileName}, file = ${data}
+    returning file_name, file
   `
-  return users
+  return result
 }
