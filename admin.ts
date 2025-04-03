@@ -11,7 +11,7 @@ export function Admin() {
     <link rel="stylesheet" type="text/css" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
-    <script src="/js/upload.js" defer></script>  
+    <script src="/js/admin.js" defer></script>  
   </head>
 <body>
   <div class="container-fluid">
@@ -23,7 +23,7 @@ export function Admin() {
             <div class="div-left">Data Uploader</div>
           </div>
           <div class="card-body">
-          <form id="csvUploadForm" name="csvUploadForm" method="post" enctype='multipart/form-data' action="/upload-csv">
+          <form id="csvUploadForm" name="csvUploadForm" method="post" enctype='multipart/form-data'>
             <label for="passwordInput">Upload Key</label>
             <input id="passwordInput" name="passwordInput" type="password">
             </br></br>
@@ -35,15 +35,17 @@ export function Admin() {
                 <span id="fileLabel" class="ms-2">No file(s) selected</span>
                 <input type="file" id="formFile" name="attachments" accept="text/csv" class="d-none" />
               </div>
-            <button type="submit" class="btn btn-primary float-end" data-bs-toggle="modal"
-              data-bs-target="#app-modal">Upload CSV Files
+            <button type="submit" class="btn btn-primary float-end">Upload CSV Files
             </button>
             </form>
-
           </div>
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-sm-12 mb-4">
+        <div id="response-container"></div>
+      </div>
   </div>
 </body>
 

@@ -1,6 +1,6 @@
 import sql from './db.js'
 
-export async function UploadCsv(ctx: any) {
+export async function PostCsv(ctx: any) {
   if (!ctx.request.hasBody) {
     console.log('no body cuz')
   }
@@ -24,21 +24,13 @@ export async function UploadCsv(ctx: any) {
     }
   }
 
-  ctx.response.body = 'submitted'
+  ctx.response.body = `<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">File Uploaded Successfully!</h4>
+  <p>The teacher subs file headers are valid and will be added to the board.</p>
+  <hr>
+  <p class="mb-0">You will be redirected in just a moment.</p>
+</div>`
 }
-
-// async function StoreCsv(age: any) {
-//   const users = await sql`
-//     select
-//       name,
-//       age
-//     from users
-//     where age > ${age}
-//   `
-//   console.log(users)
-//   // users = Result [{ name: "Walter", age: 80 }, { name: 'Murray', age: 68 }, ...]
-//   return users
-// }
 
 async function StoreCsv(fileName: string, data: Uint8Array) {
   const result = await sql`
