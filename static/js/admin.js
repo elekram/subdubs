@@ -1,6 +1,7 @@
 
 const form = document.getElementById('csvUploadForm');
 const element = document.getElementById('formFile');
+document.getElementById('submitButton').style.width = '180px';
 
 element.addEventListener("change", updateFileText);
 
@@ -23,9 +24,13 @@ async function submitForm(form) {
     console.error(e);
   }
 
+  document.getElementById('submitButton').disabled = false;
+  document.getElementById('submitButton').innerHTML = "Upload CSV Files";
 }
 
 form.addEventListener("submit", (event) => {
+  document.getElementById('submitButton').disabled = true;
+  document.getElementById('submitButton').innerHTML = "Processing...";
   event.preventDefault();
   submitForm(form);
 });
