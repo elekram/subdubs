@@ -31,6 +31,13 @@ export async function GetData(ctx: Context) {
 }
 
 function processCsvData(csvData: Record<string, string>[]) {
+  // const startIdx = (currentPage - 1) * rowsPerPage
+  // const endIdx = startIdx + rowsPerPage
+  // const paginatedData = csvData.slice(startIdx, endIdx)
+
+  // const tableBody = document.querySelector('#dataTable tbody')
+  // tableBody.innerHTML = '' // Clear the table body
+
   let table =
     `<div class="container-fluid"><table class="table table-striped"><thead><tr><th>Class</th><th>Absent Teacher</th><th>Replacement Teacher</th></tr></thead>`
   for (const row of csvData) {
