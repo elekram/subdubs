@@ -3,6 +3,7 @@ import { GetHome } from './home.ts'
 import { GetSplash } from './splash.ts'
 import { Admin } from './admin.ts'
 import { PostCsv } from './post-csv.ts'
+import { GetData } from './get-data.ts'
 import { getBaseHtml } from './html/base.ts'
 const router = new Router()
 
@@ -21,6 +22,9 @@ router
   })
   .post('/post-csv', async (ctx) => {
     await PostCsv(ctx)
+  })
+  .get('/get-data', async (ctx) => {
+    await GetData(ctx)
   })
   .get('/(.*)', (ctx) => {
     ctx.response.body = getBaseHtml()

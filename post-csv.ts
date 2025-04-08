@@ -1,5 +1,4 @@
 import sql from './db.js'
-import { parse } from 'jsr:@std/csv'
 import cfg from './config/config.ts'
 
 export async function PostCsv(ctx: any) {
@@ -16,7 +15,7 @@ export async function PostCsv(ctx: any) {
 
     if (value !== cfg.uploadKey) {
       console.log('wrong password')
-      return ctx.response.body = getErrorBody('Wrong password')
+      return ctx.response.body = getErrorBody('Invalid Upload Key')
     }
   }
 
@@ -42,11 +41,6 @@ export async function PostCsv(ctx: any) {
   }
 
   return ctx.response.body = getErrorBody('Error uploading file')
-}
-
-function stuff() {
-  // const csv = new TextDecoder().decode(data)
-  // const teacherSubs = await parse(csv, { skipFirstRow: true })
 }
 
 async function StoreCsv(fileName: string, data: Uint8Array) {

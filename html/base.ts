@@ -8,6 +8,7 @@ export function getBaseHtml(): string {
   </head>
   <body>
     <div id="ajax-container"></div>
+    <div id="ajax-container-2"></div>
   </body>
   </html>`
 }
