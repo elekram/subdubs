@@ -1,6 +1,7 @@
 import { Context } from '@oak/oak/context'
 import sql from './db.js'
 import { parse } from 'jsr:@std/csv'
+import postgres from 'postgresjs'
 
 export async function GetData(ctx: Context) {
   const result = await GetCsvData()
@@ -19,37 +20,106 @@ export async function GetData(ctx: Context) {
     }
   }
 
-  const pageSize = ctx.request.url.searchParams.get('pageSize')
+  const rowsPerPage = ctx.request.url.searchParams.get('pageSize')
   const currentPage = ctx.request.url.searchParams.get('currentPage')
   const fileId = ctx.request.url.searchParams.get('fileId')
 
-  const decodedCsvData = new TextDecoder().decode(result[0].file)
-  const parsedCsvData = parse(decodedCsvData, {
-    skipFirstRow: true,
-  })
+  if (rowsPerPage === null || currentPage === null) {
+    return ctx.response.body = {
+      error: 'pageSize or currentPage is null',
+    }
+  }
 
-  const r = processCsvData(parsedCsvData)
+  const d = processCsvData(result[0].file)
+  console.log(d)
 
-  // console.log(parsedCsvData)
+  const r = renderCsvData(d, rowsPerPage, currentPage, fileId)
+
   return ctx.response.body = r
 }
 
-function processCsvData(csvData: Record<string, string>[]) {
-  // const startIdx = (currentPage - 1) * rowsPerPage
-  // const endIdx = startIdx + rowsPerPage
-  // const paginatedData = csvData.slice(startIdx, endIdx)
+interface ProcessessCsvData {
+  AbsentTeacherCode: string
+  AbsentTeacherSurname: string
+  ReplacementTeacherCode: string
+  ReplacmentTeacherSurname: string
+  Class: string
+  Date: string
+}
 
-  // const tableBody = document.querySelector('#dataTable tbody')
-  // tableBody.innerHTML = '' // Clear the table body
+function processCsvData(csvFile: postgres.Row[string]) {
+  const decodedCsvFile = new TextDecoder().decode(csvFile)
+  const parsedCsvFile = parse(decodedCsvFile, {
+    skipFirstRow: true,
+  })
+  const processedCsvData: ProcessessCsvData[] = []
 
-  let table =
-    `<div class="container-fluid"><table class="table table-striped"><thead><tr><th>Class</th><th>Absent Teacher</th><th>Replacement Teacher</th></tr></thead>`
-  for (const row of csvData) {
+  for (const row of parsedCsvFile) {
+    if (row['Substitute Code'].trim() === '-') {
+      continue
+    }
+
+    if (row['Absent Code'].trim() === '-') {
+      continue
+    }
+
+    if (row['Date'].trim() === '-') {
+      continue
+    }
+    if (row['Class'].trim() === '-') {
+      continue
+    }
+
     const todaysDate = new Date().setHours(0, 0, 0, 0)
     const parsedDate = Date.parse(row.Date)
-    const dailyOrgDate = new Date(parsedDate)
-    table += `<tr>`
-    table += `<td>this</td><td>dsadsa</td><td>shsin</td>`
+    const csvDate = new Date(parsedDate)
+
+    // if (todaysDate !== csvDate.getTime()) continue
+
+    const absentTeacherSurname = row['Absent'].split(',')[0]
+    const ReplacmentTeacherSurname = row['Substitute'].split(',')[0]
+
+    processedCsvData.push({
+      AbsentTeacherCode: row['Absent Code'],
+      AbsentTeacherSurname: row['Absent'],
+      ReplacementTeacherCode: row['Substitute Code'],
+      ReplacmentTeacherSurname: row['Substitute'],
+      Class: row['Class'],
+      Date: row['Date'],
+    })
+  }
+  return processedCsvData
+}
+
+function renderCsvData(
+  csvData: ProcessessCsvData[],
+  rowsPerPage: string,
+  currentPage: string,
+  fileId: string | null,
+) {
+  const cp: number = +currentPage
+  const rpp: number = +rowsPerPage
+
+  const startIndex = (cp - 1) * rpp
+  const endIndex = startIndex + rpp
+  const totalPages = Math.ceil(csvData.length / rpp)
+
+  const paginatedData = csvData.slice(startIndex, endIndex)
+
+  console.log(startIndex, endIndex, totalPages)
+  console.log(csvData.length)
+  console.log(paginatedData.length)
+  console.log(fileId)
+
+  let table =
+    `<div class="container-fluid"><table class="table table-striped"><thead><tr class="fs-1"><th>Class</th><th colspan="2">Absent</th><th colspan="2">Replacement</th></tr></thead>`
+  for (const row of paginatedData) {
+    table += `<tr class="fs-2"">`
+    table += `<td>${row.Class}</td>`
+    table += `<td class="table-danger">${row.AbsentTeacherCode}</td>`
+    table += `<td class="table-danger">${row.AbsentTeacherSurname}</td>`
+    table += `<td class="table-primary">${row.ReplacementTeacherCode}</td>`
+    table += `<td class="table-primary">${row.ReplacmentTeacherSurname}</td>`
     table += `</tr>`
   }
   table += `</table></div>`
