@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const ajaxContainer = document.getElementById('ajax-container');
   const ajaxContainer2 = document.getElementById('ajax-container-2');
   const res = await fetchData('/home');
-  const res2 = await fetchData('/get-data');
+  const res2 = await fetchData('/get-data?pageSize=5&currentPage=1&fileId=0');
 
   ajaxContainer.innerHTML = res;
   ajaxContainer2.innerHTML = res2;

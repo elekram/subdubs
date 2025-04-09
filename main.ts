@@ -3,27 +3,11 @@ import cfg from './config/config.ts'
 import router from './routes.ts'
 
 const app = new Application()
-const appState = {
-  hasDataRefreshed: false,
-  currentPage: 1,
-}
-
-function functionRef() {
-  appState.currentPage++
-}
-
-setTimeout(functionRef, 10)
-
-app.use(async (ctx, next) => {
-  ctx.state.appState = appState
-  await next()
-})
 
 app.use(async (ctx, next) => {
   if (cfg.isDevEnv) {
     console.log(`${ctx.request.ip}:${ctx.request.method} ${ctx.request.url}`)
   }
-  console.log(ctx.state.appState)
   await next()
 })
 

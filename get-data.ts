@@ -19,6 +19,10 @@ export async function GetData(ctx: Context) {
     }
   }
 
+  const pageSize = ctx.request.url.searchParams.get('pageSize')
+  const currentPage = ctx.request.url.searchParams.get('currentPage')
+  const fileId = ctx.request.url.searchParams.get('fileId')
+
   const decodedCsvData = new TextDecoder().decode(result[0].file)
   const parsedCsvData = parse(decodedCsvData, {
     skipFirstRow: true,
@@ -26,7 +30,7 @@ export async function GetData(ctx: Context) {
 
   const r = processCsvData(parsedCsvData)
 
-  console.log(parsedCsvData)
+  // console.log(parsedCsvData)
   return ctx.response.body = r
 }
 

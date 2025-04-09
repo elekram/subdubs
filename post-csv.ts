@@ -1,3 +1,4 @@
+import * as uuid from 'jsr:@std/uuid'
 import sql from './db.js'
 import cfg from './config/config.ts'
 
@@ -44,15 +45,17 @@ export async function PostCsv(ctx: any) {
 }
 
 async function StoreCsv(fileName: string, data: Uint8Array) {
+  const newUUID = uuid.v1.generate()
+
   try {
     return await sql`
     insert into csv_files
-      (id, file_name, file)
+      (id, file_name, file, file_id)
     values
-      (${1}, ${fileName}, ${data})
+      (${1}, ${fileName}, ${data}, ${newUUID})
     ON CONFLICT (id) DO UPDATE
-    SET file_name = ${fileName}, file = ${data}
-    returning file_name, file
+    SET file_name = ${fileName}, file = ${data}, file_id = ${newUUID}
+    RETURNING file_id, file_name, file
   `
   } catch (e) {
     console.error('Error storing CSV - ', e)

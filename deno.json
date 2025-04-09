@@ -6,6 +6,7 @@
     "@oak/oak": "jsr:@oak/oak@^17.1.4",
     "@std/csv": "jsr:@std/csv@^1.0.5",
     "@std/datetime": "jsr:@std/datetime@^0.225.3",
+    "@std/uuid": "jsr:@std/uuid@^1.0.6",
     "postgresjs": "https://deno.land/x/postgresjs@v3.4.5/mod.js"
   },
   "fmt": {

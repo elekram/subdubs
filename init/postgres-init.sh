@@ -9,13 +9,9 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	CREATE TABLE csv_files (
 		id serial PRIMARY KEY,
 		file_name text, 
+		file_id uuid NOT NULL,
 		file bytea,
 		upload_date timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE state(
-		id serial PRIMARY KEY,
-		has_new_file boolean,
-		curent_page integer
 	);
 	SET timezone = 'Australia/Sydney';
 EOSQL
