@@ -22,6 +22,7 @@ export async function GetData(ctx: Context) {
 
   const rowsPerPage = ctx.request.url.searchParams.get('pageSize')
   const currentPage = ctx.request.url.searchParams.get('currentPage')
+
   const fileId = ctx.request.url.searchParams.get('fileId')
 
   if (rowsPerPage === null || currentPage === null) {
@@ -31,9 +32,9 @@ export async function GetData(ctx: Context) {
   }
 
   const d = processCsvData(result[0].file)
-  console.log(d)
+  // console.log(d)
 
-  const r = renderCsvData(d, rowsPerPage, currentPage, fileId)
+  const r = renderCsvData(d, rowsPerPage, currentPage, fileId, result[0].file_id)
 
   return ctx.response.body = r
 }
@@ -95,24 +96,44 @@ function renderCsvData(
   csvData: ProcessessCsvData[],
   rowsPerPage: string,
   currentPage: string,
-  fileId: string | null,
+  clientFileId: string | null,
+  serverFileId: postgres.Row[string],
 ) {
-  const cp: number = +currentPage
+  let cp: number = +currentPage
   const rpp: number = +rowsPerPage
 
-  const startIndex = (cp - 1) * rpp
-  const endIndex = startIndex + rpp
   const totalPages = Math.ceil(csvData.length / rpp)
+
+  let startIndex = 0
+  let endIndex = 0
+
+  if (clientFileId === null || clientFileId === '0') {
+    startIndex = 0
+    endIndex = startIndex + rpp
+    cp = 1
+  }
+
+  if (clientFileId === serverFileId) {
+    startIndex = cp * rpp
+    endIndex = startIndex + rpp
+    cp++
+  }
+
+  if (endIndex >= csvData.length) {
+    endIndex = csvData.length
+    cp = 1
+  }
 
   const paginatedData = csvData.slice(startIndex, endIndex)
 
-  console.log(startIndex, endIndex, totalPages)
-  console.log(csvData.length)
-  console.log(paginatedData.length)
-  console.log(fileId)
+  let table = `<div class="container-fluid">`
+  table += `<table class="table table-striped">`
+  table += `<thead><tr class="fs-1">`
+  table += `<th>Class</th>`
+  table += `<th colspan="2">Absent</th>`
+  table += `<th colspan="2">Replacement</th>`
+  table += `</tr></thead>`
 
-  let table =
-    `<div class="container-fluid"><table class="table table-striped"><thead><tr class="fs-1"><th>Class</th><th colspan="2">Absent</th><th colspan="2">Replacement</th></tr></thead>`
   for (const row of paginatedData) {
     table += `<tr class="fs-2"">`
     table += `<td>${row.Class}</td>`
@@ -122,7 +143,12 @@ function renderCsvData(
     table += `<td class="table-primary">${row.ReplacmentTeacherSurname}</td>`
     table += `</tr>`
   }
-  table += `</table><input type="hidden" id="svr-page-count" value="1"></div>`
+
+  table += `</table>`
+  table += `<input type="hidden" id="svr-page-count" value="${cp}">`
+  table += `<input type="hidden" id="file-id" value="${serverFileId}">`
+  table += `</div>`
+
   return table
 }
 

@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const state = getState();
   const renderSpeed = 2000;
 
   const windowHeight = window.innerHeight;
@@ -21,9 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
   ajaxContainer.innerHTML = res;
-
-
-  state.initialPageLoad = false;
 })
 
 function fetchTableData(pageSize, renderSpeed) {
@@ -37,12 +33,18 @@ function fetchTableData(pageSize, renderSpeed) {
 async function renderTable(pageSize) {
   let svrPageCount = 1
   if (document.getElementById('svr-page-count')) {
-    svrPageCount = 2
+    svrPageCount = document.getElementById('svr-page-count').value
+    console.log('server page count: ', svrPageCount)
   }
 
-  console.log('refreshing table');
+  let fileId = 0
+  if (document.getElementById('file-id')) {
+    fileId = document.getElementById('file-id').value
+    console.log(fileId)
+  }
+
   const ajaxContainer2 = document.getElementById('ajax-container-2');
-  const r = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=0`);
+  const r = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
   ajaxContainer2.innerHTML = r;
 }
 
@@ -63,11 +65,5 @@ async function fetchData(url) {
     });
   } catch (error) {
     console.error(error.message);
-  }
-}
-
-function getState() {
-  return {
-    "initialPageLoad": true
   }
 }
