@@ -122,7 +122,7 @@ function renderCsvData(
     table += `<td class="table-primary">${row.ReplacmentTeacherSurname}</td>`
     table += `</tr>`
   }
-  table += `</table></div>`
+  table += `</table><input type="hidden" id="svr-page-count" value="1"></div>`
   return table
 }
 

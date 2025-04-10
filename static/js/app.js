@@ -1,16 +1,50 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const state = getState();
+  const renderSpeed = 2000;
+
+  const windowHeight = window.innerHeight;
+  const fixedNavHeight = 157.57;
+  const fixedTableHeaderHeight = 72.6;
+  const fixedTableRowHeight = 62.4;
+  const padding = 50;
+
+  const pageSize = Math.floor(
+    (windowHeight - fixedNavHeight - fixedTableHeaderHeight - padding)
+    / fixedTableRowHeight
+  );
 
   const ajaxContainer = document.getElementById('ajax-container');
-  const ajaxContainer2 = document.getElementById('ajax-container-2');
+
   const res = await fetchData('/home');
-  const res2 = await fetchData('/get-data?pageSize=7&currentPage=1&fileId=0');
+
+  fetchTableData(pageSize, renderSpeed)
+
 
   ajaxContainer.innerHTML = res;
-  ajaxContainer2.innerHTML = res2;
+
 
   state.initialPageLoad = false;
 })
+
+function fetchTableData(pageSize, renderSpeed) {
+  renderTable(pageSize)
+
+  setTimeout(() => {
+    fetchTableData(pageSize, renderSpeed);
+  }, renderSpeed);
+}
+
+async function renderTable(pageSize) {
+  let svrPageCount = 1
+  if (document.getElementById('svr-page-count')) {
+    svrPageCount = 2
+  }
+
+  console.log('refreshing table');
+  const ajaxContainer2 = document.getElementById('ajax-container-2');
+  const r = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=0`);
+  ajaxContainer2.innerHTML = r;
+}
 
 async function fetchData(url) {
   try {

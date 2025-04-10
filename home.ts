@@ -9,7 +9,7 @@ export function GetHome() {
   const t = dtf.split('at')[1]
 
   return `<div class="container-fluid">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom navbar-override">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
         <img
           width="250"
