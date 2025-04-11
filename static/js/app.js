@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const renderSpeed = 2000;
+  const renderSpeed = 5000;
 
   const windowHeight = window.innerHeight;
   const fixedNavHeight = 157.57;
@@ -13,13 +13,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   );
 
   const ajaxContainer = document.getElementById('ajax-container');
-
   const res = await fetchData('/home');
+  ajaxContainer.innerHTML = res;
 
   fetchTableData(pageSize, renderSpeed)
-
-
-  ajaxContainer.innerHTML = res;
 })
 
 function fetchTableData(pageSize, renderSpeed) {
@@ -43,9 +40,9 @@ async function renderTable(pageSize) {
     console.log(fileId)
   }
 
-  const ajaxContainer2 = document.getElementById('ajax-container-2');
-  const r = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
-  ajaxContainer2.innerHTML = r;
+  const container = document.getElementById('ajax-container-2');
+  const d = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
+  container.innerHTML = d;
 }
 
 async function fetchData(url) {
