@@ -18,16 +18,14 @@ export async function GetData(ctx: Context) {
 
   if (result instanceof Error) {
     console.error(result)
-    return ctx.response.body = {
-      error: result.message,
-    }
+    return ctx.response.body =
+      `<div class="alert alert-danger" role="alert">No data found</div>`
   }
 
   if (result.length === 0) {
     console.log('No CSV data found')
-    return ctx.response.body = {
-      error: 'No CSV data found',
-    }
+    return ctx.response.body =
+      `<div class="container-fluid no-data"><i class="bi bi-cloud-arrow-up"></i></div>`
   }
 
   const rowsPerPage = ctx.request.url.searchParams.get('pageSize')
@@ -112,12 +110,6 @@ function processCsvData(csvFile: postgres.Row[string]) {
   return sortedCsvData
 }
 
-// function isNumeric(str: any) {
-//   if (typeof str != 'string') return false // we only process strings!
-//   return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-//     !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
-// }
-
 function renderCsvData(
   csvData: ProcessessCsvData[],
   rowsPerPage: string,
@@ -125,48 +117,56 @@ function renderCsvData(
   clientFileId: string | null,
   serverFileId: postgres.Row[string],
 ) {
-  let cp: number = +currentPage
-  const rpp: number = +rowsPerPage
+  let crntPage: number = +currentPage
+  const rowsPPage: number = +rowsPerPage
 
-  const totalPages = Math.ceil(csvData.length / rpp)
+  const totalPages = Math.ceil(csvData.length / rowsPPage)
 
   let startIndex = 0
   let endIndex = 0
 
   if (clientFileId === null || clientFileId === '0') {
     startIndex = 0
-    endIndex = startIndex + rpp
-    cp = 1
+    endIndex = startIndex + rowsPPage
+    crntPage = 1
   }
 
   if (clientFileId !== serverFileId) {
     startIndex = 0
-    endIndex = startIndex + rpp
-    cp = 1
+    endIndex = startIndex + rowsPPage
+    crntPage = 1
   }
 
   if (clientFileId === serverFileId) {
-    startIndex = cp * rpp
-    endIndex = startIndex + rpp
-    cp++
-  }
+    startIndex = crntPage * rowsPPage
+    endIndex = startIndex + rowsPPage
 
-  if (endIndex >= csvData.length) {
-    endIndex = csvData.length
-    cp = 1
+    if (endIndex < csvData.length) {
+      crntPage++
+    }
+
+    if (endIndex >= csvData.length) {
+      endIndex = csvData.length
+      crntPage++
+      serverFileId = '00000000-0000-0000-0000-000000000000'
+    }
   }
 
   const paginatedData = csvData.slice(startIndex, endIndex)
 
+  if (paginatedData.length === 0) {
+    return `<div class="alert alert-danger" role="alert">No data found</div>`
+  }
+
   let table = `<div class="container-fluid">`
   table += `<table class="table table-striped">`
   table += `<thead><tr class="fs-1">`
-  table += `<th>P</th>`
+  table += `<th><i class="bi bi-clock" style="font-size: 2rem;"></i></th>`
   table += `<th>Class</th>`
   table += `<th colspan="2">Absent</th>`
   table += `<th colspan="2">Replacement`
   table +=
-    `<span style="float:right;" class="badge text-bg-warning">${cp}/${totalPages}</span></th>`
+    `<span style="float:right;" class="badge text-bg-warning">${crntPage}/${totalPages}</span></th>`
   table += `</tr></thead>`
 
   for (const row of paginatedData) {
@@ -181,7 +181,7 @@ function renderCsvData(
   }
 
   table += `</table>`
-  table += `<input type="hidden" id="svr-page-count" value="${cp}">`
+  table += `<input type="hidden" id="svr-page-count" value="${crntPage}">`
   table += `<input type="hidden" id="file-id" value="${serverFileId}">`
   table += `</div>`
 

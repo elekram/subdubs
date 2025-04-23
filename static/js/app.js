@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const renderSpeed = 5000;
+  const renderSpeed = 10000;
 
   const windowHeight = window.innerHeight;
   const fixedNavHeight = 157.57;
@@ -28,7 +28,7 @@ function fetchTableData(pageSize, renderSpeed) {
 }
 
 async function renderTable(pageSize) {
-  let svrPageCount = 1
+  let svrPageCount = 0
   if (document.getElementById('svr-page-count')) {
     svrPageCount = document.getElementById('svr-page-count').value
     console.log('server page count: ', svrPageCount)

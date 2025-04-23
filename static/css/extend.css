@@ -2,3 +2,34 @@
   min-height: 20px;
   max-height: 158px;
 }
+
+.no-data {
+  width: 100px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  animation: fadeIn 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes example {
+  from {
+    background-color: red;
+  }
+
+  to {
+    background-color: yellow;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
