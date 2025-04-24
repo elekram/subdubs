@@ -7,7 +7,7 @@ export function getBaseHtml(): string {
     ${getHtmlHead()}
   </head>
   <body>
-    <div id="ajax-container"></div>
+    <div id="ajax-container-1"></div>
     <div id="ajax-container-2"></div>
   </body>
   </html>`

@@ -1,6 +1,32 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const renderSpeed = 10000;
+  fetchAndRenderSplash()
+  await delay(5000)
+  fetchAndRenderSubsNav(30000);
+  fetchAndRenderSubsTable(10000)
+})
 
+async function fetchAndRenderSplash() {
+  const data = await fetchData(`/get-splash`);
+  const container = document.getElementById('ajax-container-1');
+
+  render(data, container)
+}
+
+async function fetchAndRenderSubsNav(refreshTime) {
+  const data = await fetchData(`/get-subs-navbar`);
+  const container = document.getElementById('ajax-container-1');
+  render(data, container)
+
+  setTimeout(() => {
+    fetchAndRenderSubsNav(refreshTime);
+  }, refreshTime);
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchAndRenderSubsTable(refreshTime) {
   const windowHeight = window.innerHeight;
   const fixedNavHeight = 157.57;
   const fixedTableHeaderHeight = 72.6;
@@ -12,22 +38,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     / fixedTableRowHeight
   );
 
-  const ajaxContainer = document.getElementById('ajax-container');
-  const res = await fetchData('/home');
-  ajaxContainer.innerHTML = res;
-
-  fetchTableData(pageSize, renderSpeed)
-})
-
-function fetchTableData(pageSize, renderSpeed) {
-  renderTable(pageSize)
-
-  setTimeout(() => {
-    fetchTableData(pageSize, renderSpeed);
-  }, renderSpeed);
-}
-
-async function renderTable(pageSize) {
   let svrPageCount = 0
   if (document.getElementById('svr-page-count')) {
     svrPageCount = document.getElementById('svr-page-count').value
@@ -41,8 +51,18 @@ async function renderTable(pageSize) {
   }
 
   const container = document.getElementById('ajax-container-2');
-  const d = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
-  container.innerHTML = d;
+  const data = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
+
+  render(data, container)
+
+  setTimeout(() => {
+    fetchAndRenderSubsTable(pageSize, refreshTime);
+  }, refreshTime);
+}
+
+function render(data, container) {
+  container.innerHTML = ''
+  container.innerHTML = data;
 }
 
 async function fetchData(url) {

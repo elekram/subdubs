@@ -1,6 +1,6 @@
 import { Router } from 'jsr:@oak/oak/router'
-import { GetHome } from './home.ts'
-import { GetSplash } from './splash.ts'
+import { GetSubsNavBar } from './home.ts'
+import { GetSplashHtml } from './html/splash.ts'
 import { Admin } from './admin.ts'
 import { PostCsv } from './post-csv.ts'
 import { GetData } from './get-data.ts'
@@ -14,8 +14,8 @@ router
   .get('/ping', (ctx) => {
     ctx.response.body = 'pong'
   })
-  .get('/home', (ctx) => {
-    ctx.response.body = GetHome()
+  .get('/get-subs-navbar', (ctx) => {
+    ctx.response.body = GetSubsNavBar()
   })
   .get('/admin', (ctx) => {
     ctx.response.body = Admin()
@@ -25,6 +25,9 @@ router
   })
   .get('/get-data', async (ctx) => {
     await GetData(ctx)
+  })
+  .get('/get-splash', async (ctx) => {
+    await GetSplashHtml(ctx)
   })
   .get('/(.*)', (ctx) => {
     ctx.response.body = getBaseHtml()

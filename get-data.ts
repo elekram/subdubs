@@ -25,7 +25,7 @@ export async function GetData(ctx: Context) {
   if (result.length === 0) {
     console.log('No CSV data found')
     return ctx.response.body =
-      `<div class="container-fluid no-data"><i class="bi bi-cloud-arrow-up"></i></div>`
+      `<div class="container-fluid center-cloud"><i class="bi bi-cloud-arrow-up"></i></div>`
   }
 
   const rowsPerPage = ctx.request.url.searchParams.get('pageSize')
@@ -39,8 +39,6 @@ export async function GetData(ctx: Context) {
   }
 
   const d = processCsvData(result[0].file)
-  // console.log(d)
-
   const r = renderCsvData(d, rowsPerPage, currentPage, fileId, result[0].file_id)
 
   return ctx.response.body = r

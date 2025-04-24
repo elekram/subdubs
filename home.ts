@@ -1,4 +1,4 @@
-export function GetHome() {
+export function GetSubsNavBar() {
   const dtf = new Intl.DateTimeFormat('en-AU', {
     dateStyle: 'full',
     timeStyle: 'short',
