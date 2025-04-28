@@ -1,25 +1,27 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  const paramsString = window.location.search;
+  const searchParams = new URLSearchParams(paramsString);
+  console.log(searchParams.get("foo"));
+
+  const resetPageDelay = 3600000
   const tableRefresh = 10000
   const navbarRefresh = 30000
 
   fetchAndRenderSplash()
   await delay(5000)
-  
+
   fetchNavBar(navbarRefresh)
   fetchTableData(tableRefresh)
+  resetPage(resetPageDelay)
 })
 
 async function fetchAndRenderSplash() {
   const container = document.getElementById('ajax-container-1');
   const data = await fetchData(`/get-splash`);
   container.innerHTML = data;
-
-  render(data, container)
 }
 
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 
 async function fetchNavBar(renderSpeed) {
 
@@ -34,6 +36,18 @@ async function fetchNavBar(renderSpeed) {
   }, renderSpeed);
 }
 
+async function resetPage(ms) {
+  await delay(ms)
+  location.reload();
+
+  setTimeout(() => {
+    resetPage(ms);
+  }, ms);
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
 function fetchTableData(renderSpeed) {
@@ -59,13 +73,11 @@ async function renderTable() {
   let svrPageCount = 1
   if (document.getElementById('svr-page-count')) {
     svrPageCount = document.getElementById('svr-page-count').value
-    console.log('server page count: ', svrPageCount)
   }
 
   let fileId = 0
   if (document.getElementById('file-id')) {
     fileId = document.getElementById('file-id').value
-    console.log(fileId)
   }
 
   const container = document.getElementById('ajax-container-2');
