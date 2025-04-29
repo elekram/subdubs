@@ -19,7 +19,7 @@ services:
       - 5432:5432
     environment:
       # POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_PASSWORD: secret
+      POSTGRES_PASSWORD: VkoJeNJyoPXpUbnRYNwvAnriFh
       POSTGRES_USER: postgres
     volumes:
       - pgdata:/var/lib/postgresql/data

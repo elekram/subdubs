@@ -1,5 +1,5 @@
 import * as uuid from 'jsr:@std/uuid'
-import sql from './db.js'
+import sql from './db.ts'
 import cfg from './config/config.ts'
 
 export async function PostCsv(ctx: any) {
