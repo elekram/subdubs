@@ -38,6 +38,19 @@ export async function GetData(ctx: Context) {
     }
   }
 
+  const today = new Date()
+
+  if (today.getDay() === 0 || today.getDay() === 6) {
+    console.log('its the weekend')
+    return ctx.response.body =
+      `<div class='container-fluid text-center'></br><h1>It's the weekend!</h1></br><span class='big-font'>🌴😎</span></div></div>`
+  }
+
+  if (today.getHours() >= 14) {
+    return ctx.response.body =
+      `<div class='container-fluid text-center'></br><h1>No more classes today.</h1></br><span class='big-font'>😎</span></div></div>`
+  }
+
   const d = processCsvData(result[0].file)
   const r = renderCsvData(d, rowsPerPage, currentPage, fileId, result[0].file_id)
 
@@ -50,7 +63,6 @@ function processCsvData(csvFile: postgres.Row[string]) {
     skipFirstRow: true,
   })
   const processedCsvData: ProcessessCsvData[] = []
-  // const duplicates: string[] = []
   const uniqueClasses: Set<string> = new Set()
 
   for (const row of parsedCsvFile) {
@@ -75,8 +87,6 @@ function processCsvData(csvFile: postgres.Row[string]) {
 
     // if (todaysDate !== csvDate.getTime()) continue
 
-    // const absentTeacherSurname = row['Absent'].split(',')[0]
-    // const ReplacmentTeacherSurname = row['Substitute'].split(',')[0]
     if (uniqueClasses.has(`${row['Period'].slice(4)}.${row['Class']}`)) {
       continue
     }
@@ -144,16 +154,24 @@ function renderCsvData(
     }
 
     if (endIndex >= csvData.length) {
-      endIndex = csvData.length
-      crntPage++
-      serverFileId = '00000000-0000-0000-0000-000000000000'
+      if (startIndex <= csvData.length) {
+        endIndex = csvData.length
+        crntPage++
+        serverFileId = '00000000-0000-0000-0000-000000000000'
+      }
+
+      if (startIndex > csvData.length) {
+        startIndex = 0
+        endIndex = startIndex + rowsPPage
+        crntPage = 1
+      }
     }
   }
 
   const paginatedData = csvData.slice(startIndex, endIndex)
 
   if (paginatedData.length === 0) {
-    return `<div class="alert alert-danger" role="alert">No data found</div>`
+    return `<div class="container-fluid"></br><div class="alert alert-secondary text-center" role="alert"><h2>No teacher replacements today</h2></div></div>`
   }
 
   let table = `<div class="container-fluid">`

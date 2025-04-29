@@ -1,17 +1,24 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const paramsString = window.location.search;
-  const searchParams = new URLSearchParams(paramsString);
-  console.log(searchParams.get("foo"));
-
-  const resetPageDelay = 3600000
-  const tableRefresh = 10000
-  const navbarRefresh = 30000
-
   fetchAndRenderSplash()
   await delay(5000)
 
-  fetchNavBar(navbarRefresh)
-  fetchTableData(tableRefresh)
+  const validModes = ['subs']
+
+  const paramsString = window.location.search;
+  const searchParams = new URLSearchParams(paramsString);
+  console.log(searchParams.get('mode'));
+
+  const mode = searchParams.get('mode')
+
+  if (!mode || mode === 'subs' || !validModes.includes(mode)) {
+
+    const tableRefresh = 10000
+    const navbarRefresh = 30000
+    fetchNavBar(navbarRefresh)
+    fetchTableData(tableRefresh)
+
+  }
+  const resetPageDelay = 3600000
   resetPage(resetPageDelay)
 })
 
@@ -21,10 +28,7 @@ async function fetchAndRenderSplash() {
   container.innerHTML = data;
 }
 
-
-
 async function fetchNavBar(renderSpeed) {
-
   const container = document.getElementById('ajax-container-1');
   container.innerHTML = ''
 
@@ -44,11 +48,6 @@ async function resetPage(ms) {
     resetPage(ms);
   }, ms);
 }
-
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 
 function fetchTableData(renderSpeed) {
   renderTable()
@@ -103,4 +102,8 @@ async function fetchData(url) {
   } catch (error) {
     console.error(error.message);
   }
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

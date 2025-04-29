@@ -24,6 +24,10 @@
   /* animation: wiggle 2s linear infinite; */
 }
 
+.big-font{
+  font-size: 100px;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
