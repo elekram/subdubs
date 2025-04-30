@@ -40,9 +40,6 @@ async function fetchNavBar(renderSpeed) {
   const data = await fetchData(`/get-subs-navbar`);
 
   if (!data) {
-    if (document.getElementById('app-error').innerHTML !== '') {
-      return
-    }
     networkError()
     return
   }
@@ -91,9 +88,6 @@ async function renderTable() {
   const data = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
 
   if (!data) {
-    if (document.getElementById('app-error').innerHTML !== '') {
-      return
-    }
     networkError()
     return
   }
@@ -106,8 +100,12 @@ async function renderTable() {
 }
 
 function networkError() {
+  if (document.getElementById('app-error').innerHTML !== '') {
+    return
+  }
   document.getElementById('ajax-container-1').innerHTML = ''
   document.getElementById('ajax-container-2').innerHTML = ''
+
   const errHtml = `<div class="container-fluid center-cloud">🌐🔗😵</i></div>`
   document.getElementById('app-error').innerHTML = errHtml
 }
