@@ -39,11 +39,6 @@ async function fetchNavBar(renderSpeed) {
 
   const data = await fetchData(`/get-subs-navbar`);
 
-  if (!data) {
-    networkError()
-    return
-  }
-
   if (document.getElementById('app-error').innerHTML !== '') {
     location.reload();
   }
