@@ -39,6 +39,14 @@ async function fetchNavBar(renderSpeed) {
 
   const data = await fetchData(`/get-subs-navbar`);
 
+  if (!data) {
+    if (document.getElementById('app-error').innerHTML !== '') {
+      return
+    }
+    networkError()
+    return
+  }
+
   if (document.getElementById('app-error').innerHTML !== '') {
     location.reload();
   }
@@ -83,6 +91,9 @@ async function renderTable() {
   const data = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
 
   if (!data) {
+    if (document.getElementById('app-error').innerHTML !== '') {
+      return
+    }
     networkError()
     return
   }
