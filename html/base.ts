@@ -9,6 +9,7 @@ export function getBaseHtml(): string {
   <body>
     <div id="ajax-container-1"></div>
     <div id="ajax-container-2"></div>
+    <div id="app-error"></div>
   </body>
   </html>`
 }

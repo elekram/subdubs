@@ -46,7 +46,7 @@ export async function GetData(ctx: Context) {
       `<div class='container-fluid text-center'></br><h1>It's the weekend!</h1></br><span class='big-font'>🌴😎</span></div></div>`
   }
 
-  if (today.getHours() >= 14) {
+  if (today.getHours() >= 16) {
     return ctx.response.body =
       `<div class='container-fluid text-center'></br><h1>No more classes today.</h1></br><span class='big-font'>😎</span></div></div>`
   }
@@ -154,13 +154,13 @@ function renderCsvData(
     }
 
     if (endIndex >= csvData.length) {
-      if (startIndex <= csvData.length) {
+      if (startIndex < csvData.length) {
         endIndex = csvData.length
         crntPage++
         serverFileId = '00000000-0000-0000-0000-000000000000'
       }
 
-      if (startIndex > csvData.length) {
+      if (startIndex >= csvData.length) {
         startIndex = 0
         endIndex = startIndex + rowsPPage
         crntPage = 1

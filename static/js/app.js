@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const mode = searchParams.get('mode')
 
   if (!mode || mode === 'subs' || !validModes.includes(mode)) {
-
     const tableRefresh = 10000
     const navbarRefresh = 30000
     fetchNavBar(navbarRefresh)
@@ -25,6 +24,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function fetchAndRenderSplash() {
   const container = document.getElementById('ajax-container-1');
   const data = await fetchData(`/get-splash`);
+
+  if (!data) {
+    networkError()
+    return
+  }
+
   container.innerHTML = data;
 }
 
@@ -33,20 +38,20 @@ async function fetchNavBar(renderSpeed) {
   container.innerHTML = ''
 
   const data = await fetchData(`/get-subs-navbar`);
-  container.innerHTML = data;
 
+  if (!data) {
+    networkError()
+    return
+  }
+
+  if (document.getElementById('app-error').innerHTML !== '') {
+    location.reload();
+  }
+
+  container.innerHTML = data;
   setTimeout(() => {
     fetchNavBar(renderSpeed);
   }, renderSpeed);
-}
-
-async function resetPage(ms) {
-  await delay(ms)
-  location.reload();
-
-  setTimeout(() => {
-    resetPage(ms);
-  }, ms);
 }
 
 function fetchTableData(renderSpeed) {
@@ -80,8 +85,34 @@ async function renderTable() {
   }
 
   const container = document.getElementById('ajax-container-2');
-  const d = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
-  container.innerHTML = d;
+  const data = await fetchData(`/get-data?pageSize=${pageSize}&currentPage=${svrPageCount}&fileId=${fileId}`);
+
+  if (!data) {
+    networkError()
+    return
+  }
+
+  if (document.getElementById('app-error').innerHTML !== '') {
+    location.reload();
+  }
+
+  container.innerHTML = data;
+}
+
+function networkError() {
+  document.getElementById('ajax-container-1').innerHTML = ''
+  document.getElementById('ajax-container-2').innerHTML = ''
+  const errHtml = `<div class="container-fluid center-cloud">🌐🔗😵</i></div>`
+  document.getElementById('app-error').innerHTML = errHtml
+}
+
+async function resetPage(ms) {
+  await delay(ms)
+  location.reload();
+
+  setTimeout(() => {
+    resetPage(ms);
+  }, ms);
 }
 
 async function fetchData(url) {
