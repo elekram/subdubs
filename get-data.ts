@@ -85,7 +85,7 @@ function processCsvData(csvFile: postgres.Row[string]) {
     const parsedDate = Date.parse(row.Date)
     const csvDate = new Date(parsedDate)
 
-    // if (todaysDate !== csvDate.getTime()) continue
+    if (todaysDate !== csvDate.getTime()) continue
 
     if (uniqueClasses.has(`${row['Period'].slice(4)}.${row['Class']}`)) {
       continue
