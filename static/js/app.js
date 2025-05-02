@@ -104,7 +104,7 @@ function networkError() {
   document.getElementById('ajax-container-1').innerHTML = ''
   document.getElementById('ajax-container-2').innerHTML = ''
 
-  const errHtml = `<div class="container-fluid center-cloud">🌐 😵</i></div>`
+  const errHtml = `<div class="container-fluid center-cloud">🌐 😵</div>`
   document.getElementById('app-error').innerHTML = errHtml
 }
 
