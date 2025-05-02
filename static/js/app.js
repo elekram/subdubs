@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  fetchAndRenderSplash()
-  await delay(5000)
+  // fetchAndRenderSplash()
+  // await delay(5000)
 
   const validModes = ['subs']
 
@@ -35,8 +35,6 @@ async function fetchAndRenderSplash() {
 
 async function fetchNavBar(renderSpeed) {
   const container = document.getElementById('ajax-container-1');
-  container.innerHTML = ''
-
   const data = await fetchData(`/get-subs-navbar`);
 
   if (!data) {
@@ -106,7 +104,7 @@ function networkError() {
   document.getElementById('ajax-container-1').innerHTML = ''
   document.getElementById('ajax-container-2').innerHTML = ''
 
-  const errHtml = `<div class="container-fluid center-cloud">🌐😵</i></div>`
+  const errHtml = `<div class="container-fluid center-cloud">🌐 😵</i></div>`
   document.getElementById('app-error').innerHTML = errHtml
 }
 

@@ -38,19 +38,6 @@ export async function GetData(ctx: Context) {
     }
   }
 
-  const today = new Date()
-
-  if (today.getDay() === 0 || today.getDay() === 6) {
-    console.log('its the weekend')
-    return ctx.response.body =
-      `<div class='container-fluid text-center'></br><h1>It's the weekend!</h1></br><span class='big-font'>🌴😎</span></div></div>`
-  }
-
-  if (today.getHours() >= 16) {
-    return ctx.response.body =
-      `<div class='container-fluid text-center'></br><h1>No more classes today.</h1></br><span class='big-font'>😎</span></div></div>`
-  }
-
   const d = processCsvData(result[0].file)
   const r = renderCsvData(d, rowsPerPage, currentPage, fileId, result[0].file_id)
 
@@ -169,6 +156,20 @@ function renderCsvData(
   }
 
   const paginatedData = csvData.slice(startIndex, endIndex)
+
+  const today = new Date()
+
+  if (today.getDay() === 0 || today.getDay() === 6) {
+    return `<div class='container-fluid text-center'></br><h1>It's the weekend</h1></br><span class='big-font'>🌴😎</span></div></div>`
+  }
+
+  if (today.getHours() >= 16) {
+    return `<div class='container-fluid text-center'></br><h1>School finished. No more classes today.</h1></br><span class='big-font'>😎</span></div></div>`
+  }
+
+  if (paginatedData.length === 0 && today.getHours() > 0) {
+    return `<div class="container-fluid"></br><div class="alert alert-secondary text-center" role="alert"><h2>Waiting for today's data to be uploaded</h2></div><div class="center-cloud"><i class="bi bi-cloud-arrow-up"></i></div></div>`
+  }
 
   if (paginatedData.length === 0) {
     return `<div class="container-fluid"></br><div class="alert alert-secondary text-center" role="alert"><h2>No teacher replacements today</h2></div></div>`
