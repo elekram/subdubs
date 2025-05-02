@@ -1,10 +1,10 @@
 import * as uuid from 'jsr:@std/uuid'
-import sql from './db.ts'
-import cfg from './config/config.ts'
+import sql from '../../db/db.ts'
+import cfg from '../../config/config.ts'
 
 export async function PostCsv(ctx: any) {
   if (!ctx.request.hasBody) {
-    console.log('no body cuz')
+    console.error('no form body')
   }
   const reqBody = await ctx.request.body.formData()
 
@@ -15,7 +15,6 @@ export async function PostCsv(ctx: any) {
     if (field !== 'passwordInput') continue
 
     if (value !== cfg.uploadKey) {
-      console.log('wrong password')
       return ctx.response.body = getErrorBody('Invalid Upload Key')
     }
   }
@@ -31,7 +30,6 @@ export async function PostCsv(ctx: any) {
       const data = await value.arrayBuffer()
 
       const res = await StoreCsv(fileName, new Uint8Array(data))
-      console.log(res)
 
       if (res instanceof Error) {
         return ctx.response.body = getErrorBody(res.message)

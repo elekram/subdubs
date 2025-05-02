@@ -1,5 +1,5 @@
 import { Context } from '@oak/oak/context'
-import sql from './db.ts'
+import sql from '../../db/db.ts'
 import { parse } from 'jsr:@std/csv'
 import postgres from 'postgresjs'
 

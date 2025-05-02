@@ -1,10 +1,11 @@
 import { Router } from 'jsr:@oak/oak/router'
-import { GetSubsNavBar } from './home.ts'
-import { GetSplashHtml } from './html/splash.ts'
-import { Admin } from './admin.ts'
-import { PostCsv } from './post-csv.ts'
-import { GetData } from './get-data.ts'
-import { getBaseHtml } from './html/base.ts'
+import { GetSubsNavBar } from '../modules/subs/get-subs-navbar.ts '
+import { GetSplash } from '../html/get-splash.ts'
+import { Admin } from '../modules/subs/admin.ts'
+import { PostCsv } from '../modules/subs/post-csv.ts'
+import { GetData } from '../modules/subs/get-data.ts'
+import { getBaseHtml } from '../html/base.ts'
+import { GetCarousel } from '../modules/carousel/get-carousel.ts'
 const router = new Router()
 
 router
@@ -27,7 +28,10 @@ router
     await GetData(ctx)
   })
   .get('/get-splash', async (ctx) => {
-    await GetSplashHtml(ctx)
+    await GetSplash(ctx)
+  })
+  .get('/get-carousel', async (ctx) => {
+    await GetCarousel(ctx)
   })
   .get('/(.*)', (ctx) => {
     ctx.response.body = getBaseHtml()

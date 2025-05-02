@@ -1,6 +1,6 @@
 import { Application } from 'jsr:@oak/oak/application'
 import cfg from './config/config.ts'
-import router from './routes.ts'
+import router from './routes/routes.ts'
 
 const app = new Application()
 
