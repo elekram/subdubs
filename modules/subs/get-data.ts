@@ -88,6 +88,14 @@ function processCsvData(csvFile: postgres.Row[string]) {
       continue
     }
 
+    if (period === 'PAS') {
+      continue
+    }
+
+    if (period === 'PBS') {
+      continue
+    }
+
     processedCsvData.push({
       AbsentTeacherCode: row['Absent Code'],
       AbsentTeacherSurname: row['Absent'],
