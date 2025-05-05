@@ -1,4 +1,4 @@
-export function getHtmlHead(): string {
+export function getHtmlHead(appJs: string): string {
   return `<meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A web application that does school stuff">
@@ -9,5 +9,5 @@ export function getHtmlHead(): string {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" type="text/css" href="/css/extend.css" />
   <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="/js/app.js" defer></script>`
+  <script src="/js/${appJs}" defer></script>`
 }

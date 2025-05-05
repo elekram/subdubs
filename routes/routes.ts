@@ -5,7 +5,7 @@ import { Admin } from '../modules/subs/admin.ts'
 import { PostCsv } from '../modules/subs/post-csv.ts'
 import { GetData } from '../modules/subs/get-data.ts'
 import { getBaseHtml } from '../html/base.ts'
-import { GetCarousel } from '../modules/carousel/get-carousel.ts'
+import { GetSlideShow } from '../modules/slideshow/get-slideshow.ts'
 const router = new Router()
 
 router
@@ -30,8 +30,8 @@ router
   .get('/get-splash', async (ctx) => {
     await GetSplash(ctx)
   })
-  .get('/get-carousel', async (ctx) => {
-    await GetCarousel(ctx)
+  .get('/get-slideshow', async (ctx) => {
+    await GetSlideShow(ctx)
   })
   .get('/(.*)', (ctx) => {
     ctx.response.body = getBaseHtml()
