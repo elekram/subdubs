@@ -1,8 +1,9 @@
+import { Context } from '@oak/oak/context'
 import * as uuid from 'jsr:@std/uuid'
 import sql from '../../db/db.ts'
 import cfg from '../../config/config.ts'
 
-export async function PostCsv(ctx: any) {
+export async function PostCsv(ctx: Context) {
   if (!ctx.request.hasBody) {
     console.error('no form body')
   }
@@ -28,7 +29,6 @@ export async function PostCsv(ctx: any) {
     if (value instanceof File) {
       const fileName = value.name
       const data = await value.arrayBuffer()
-
       const res = await StoreCsv(fileName, new Uint8Array(data))
 
       if (res instanceof Error) {

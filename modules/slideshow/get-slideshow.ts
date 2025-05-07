@@ -8,13 +8,13 @@ export function GetSlideShow(ctx: Context) {
     ${getHtmlHead('slideshow-admin.js')}
   </head>
 <body>
-<div class="slider-outer">
-  <div class="slider-middle">
-    <div class="slider-inner">
-      <img id="slider-image" src="/img/slider-test/p2.jpg" alt="...">
+  <div class="slider-outer">
+    <div class="slider-middle">
+      <div class="slider-inner">
+        <img id="slider-image" src="/img/slider-test/p1.jpg" alt="...">
+      </div>
     </div>
-  </div>
-</div> 
+  </div> 
 </body>
 </html>`
 
