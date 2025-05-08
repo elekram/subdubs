@@ -1,4 +1,6 @@
 import { Context } from '@oak/oak/context'
+import * as uuid from 'jsr:@std/uuid'
+import sql from '../../db/db.ts'
 import cfg from '../../config/config.ts'
 
 export async function PostSlideshow(ctx: Context) {
@@ -35,4 +37,23 @@ export async function PostSlideshow(ctx: Context) {
     // }
   }
   return ctx.response.body = 'File uploaded successfully'
+}
+
+async function storePhotos(fileName: string, data: Uint8Array) {
+  const newUUID = uuid.v1.generate()
+
+  try {
+    return await sql`
+    insert into slideshow_files
+      (id, , slideshow_id, file_name, file)
+    values
+      (${1}, ${fileName}, ${data}, ${newUUID})
+    ON CONFLICT (id) DO UPDATE
+    SET file_name = ${fileName}, file = ${data}, file_id = ${newUUID}
+    RETURNING file_id, file_name, file
+  `
+  } catch (e) {
+    console.error('Error storing CSV - ', e)
+    return new Error('Error storing CSV - ' + e)
+  }
 }

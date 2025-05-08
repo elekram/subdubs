@@ -13,5 +13,12 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 		file bytea,
 		upload_date timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
 	);
+	CREATE TABLE slideshow_files (
+		id serial PRIMARY KEY,
+		slideshow_id uuid NOT NULL,
+		file_name text,
+		file bytea,
+		upload_date timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+	);
 	SET timezone = 'Australia/Sydney';
 EOSQL
