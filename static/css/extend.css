@@ -48,6 +48,10 @@
   vertical-align: middle;
 }
 
+td.ctl-width{
+  width: 180px;
+}
+
 .slider-inner {
   display: flex;
   justify-content: center;

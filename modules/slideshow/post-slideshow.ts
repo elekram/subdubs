@@ -8,9 +8,23 @@ export async function PostSlideshow(ctx: Context) {
     console.error('no form body')
   }
 
+  const newUUID = uuid.v1.generate()
+
   const reqBody = await ctx.request.body.formData()
 
+  // for (const pair of reqBody.entries()) {
+  //   const field = pair[0]
+  //   const value = pair[1]
+
+  //   if (field !== 'passwordInput') continue
+
+  //   if (value !== cfg.uploadKey) {
+  //     return ctx.response.body = getErrorBody('Invalid Upload Key')
+  //   }
+  // }
+
   for (const pair of reqBody.entries()) {
+    const slideShowName = 'Slideshow 1'
     const field = pair[0]
     const value = pair[1]
 
@@ -23,11 +37,16 @@ export async function PostSlideshow(ctx: Context) {
       console.log(fileName)
       console.log(data)
       console.log(new Uint8Array(data))
-      // const res = await StoreCsv(fileName, )
+      const res = await storePhotos(
+        fileName,
+        new Uint8Array(data),
+        slideShowName,
+        newUUID,
+      )
 
-      // if (res instanceof Error) {
-      //   return ctx.response.body = getErrorBody(res.message)
-      // }
+      if (res instanceof Error) {
+        return ctx.response.body = getErrorBody(res.message)
+      }
     }
 
     // if (field !== 'passwordInput') continue
@@ -39,21 +58,32 @@ export async function PostSlideshow(ctx: Context) {
   return ctx.response.body = 'File uploaded successfully'
 }
 
-async function storePhotos(fileName: string, data: Uint8Array) {
-  const newUUID = uuid.v1.generate()
-
+async function storePhotos(
+  fileName: string,
+  data: Uint8Array,
+  slideShowName: string,
+  uuid: string,
+) {
   try {
     return await sql`
     insert into slideshow_files
-      (id, , slideshow_id, file_name, file)
+      (slideshow_id, slideshow_name, file_name, file)
     values
-      (${1}, ${fileName}, ${data}, ${newUUID})
-    ON CONFLICT (id) DO UPDATE
-    SET file_name = ${fileName}, file = ${data}, file_id = ${newUUID}
-    RETURNING file_id, file_name, file
+      (${uuid}, ${slideShowName}, ${fileName}, ${data})
+    RETURNING slideshow_id, slideshow_name, file_name, file
   `
   } catch (e) {
     console.error('Error storing CSV - ', e)
     return new Error('Error storing CSV - ' + e)
   }
+}
+
+function getErrorBody(error: string) {
+  return `<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">File Upload Failed</h4>
+  <p>${error}.</p>
+  <p>Contact your systems administrator.</p>
+  <hr>
+  <p class="mb-0">You will be redirected in just a moment.</p>
+</div>`
 }

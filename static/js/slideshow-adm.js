@@ -6,8 +6,15 @@ element.addEventListener("change", updateFileText);
 
 function updateFileText() {
   let fileNames = ""
+  let totalSize = 0
   for (const f of element.files) {
+    totalSize += f.size
     fileNames += f.name + ', '
+  }
+
+  if (totalSize > 25000000) {
+    alert('too big')
+    return
   }
   document.getElementById('fileLabel').innerHTML = fileNames
 }

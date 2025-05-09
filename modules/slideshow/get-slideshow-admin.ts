@@ -14,15 +14,31 @@ export function GetSlideshowAdmin(ctx: Context) {
         <div class="col-sm-12 mb-4">
           <div class=" card">
             <div class="card-header">
-              <div class="div-left">Photo Uploader</div>
+              <div class="div-left">Slideshow Creator</div>
             </div>
             <div class="card-body">
             <form id="photoUploadForm" name="photoUploadForm" method="post" enctype='multipart/form-data'>
             <label for="formFile" class="form-label">Photo Uploader</label>
             <div></br></div>
-              <label for="passwordInput">🔐 Upload Key</label>
-              <input id="passwordInput" name="passwordInput" type="password">
-              
+            <table class="table table-default">
+              <tr>
+                <td class="ctl-width">
+                  <label for="passwordInput">🔐 Upload Key</label>
+                  
+                </td>
+                <td>
+                  <input id="passwordInput" name="passwordInput" type="password">
+                </td>
+              </tr>
+              <tr>
+                <td class="ctl-width">
+                  <label for="slideshowName">🖼️ Slideshow Name</label>
+                </td>
+                <td>
+                  <input id="slideshowName" name="slideshowName" type="text">
+                </td>
+              </tr>
+            </table>    
                 <div class=" mb-3">    
                   <br>
                   <label for="formFile" class="btn btn-secondary ">Choose Files</label>

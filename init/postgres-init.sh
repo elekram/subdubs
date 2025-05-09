@@ -16,6 +16,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	CREATE TABLE slideshow_files (
 		id serial PRIMARY KEY,
 		slideshow_id uuid NOT NULL,
+		slideshow_name text,
 		file_name text,
 		file bytea,
 		upload_date timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
