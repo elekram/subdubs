@@ -5,9 +5,11 @@ import { Admin } from '../modules/subs/admin.ts'
 import { PostCsv } from '../modules/subs/post-csv.ts'
 import { GetData } from '../modules/subs/get-data.ts'
 import { getBaseHtml } from '../html/base.ts'
+import { getAdminPanel } from '../html/admin-panel.ts'
+import { getNavbar } from '../html/admin-navbar.ts'
 import { GetSlideShow } from '../modules/slideshow/get-slideshow.ts'
 import { GetSlideshowAdmin } from '../modules/slideshow/get-slideshow-admin.ts'
-import { PostSlideshow } from '../modules/slideshow/post-slideshow.ts'
+import { PostSlideshow } from '../modules/slideshow/post-add-slideshow.ts'
 
 const router = new Router()
 
@@ -18,11 +20,18 @@ router
   .get('/ping', (ctx) => {
     ctx.response.body = 'pong'
   })
+  .get('/v2-admin', (ctx) => {
+    ctx.response.body = getAdminPanel()
+  })
   .get('/get-subs-navbar', (ctx) => {
     ctx.response.body = GetSubsNavBar()
   })
-  .get('/admin', (ctx) => {
-    ctx.response.body = Admin()
+  // .get('/admin', (ctx) => {
+  //   ctx.response.body = Admin()
+  // })
+
+  .get('/admin-v2-navbar', (ctx) => {
+    ctx.response.body = getNavbar()
   })
   .post('/post-csv', async (ctx) => {
     await PostCsv(ctx)
@@ -39,7 +48,10 @@ router
   .get('/get-slideshow', async (ctx) => {
     await GetSlideShow(ctx)
   })
-  .post('/post-slideshow', async (ctx) => {
+  // .post('/post-slideshow', async (ctx) => {
+  //   await PostSlideshow(ctx)
+  // })
+  .post('/post-add-slideshow', async (ctx) => {
     await PostSlideshow(ctx)
   })
   .get('/(.*)', (ctx) => {

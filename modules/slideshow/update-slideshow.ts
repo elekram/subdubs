@@ -18,15 +18,16 @@ export function GetSlideshowAdmin(ctx: Context) {
             </div>
             <div class="card-body">
             <form id="photoUploadForm" name="photoUploadForm" method="post" enctype='multipart/form-data'>
-            <div>Add Slideshow</div>
+            <label for="formFile" class="form-label">Photo Uploader</label>
             <div></br></div>
             <table class="table table-default">
               <tr>
                 <td class="ctl-width">
-                  <label for="keyInput">🔐 Key</label>
+                  <label for="passwordInput">🔐 Upload Key</label>
+                  
                 </td>
                 <td>
-                  <input id="keyInput" name="keyInput" type="password">
+                  <input id="passwordInput" name="passwordInput" type="password">
                 </td>
               </tr>
               <tr>
@@ -40,9 +41,11 @@ export function GetSlideshowAdmin(ctx: Context) {
             </table>    
                 <div class=" mb-3">    
                   <br>
-                  
+                  <label for="formFile" class="btn btn-secondary ">Choose Files</label>
+                  <span id="fileLabel" class="ms-2">No file(s) selected</span>
+                  <input type="file" multiple id="formFile" name="attachments" accept="text/jpg" class="d-none" />
                 </div>
-              <button type="submit" id="submitButton" class="btn btn-primary float-end">Create Slideshow
+              <button type="submit" id="submitButton" class="btn btn-primary float-end">Upload Photos
               </button>
               </form>
             </div>
@@ -54,7 +57,6 @@ export function GetSlideshowAdmin(ctx: Context) {
           <div id="response-container"></div>
         </div>
     </div>
-    <div id="ajax-container"></div>
   </body>
 </html>`
 

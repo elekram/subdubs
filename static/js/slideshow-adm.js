@@ -1,8 +1,16 @@
+document.addEventListener('DOMContentLoaded', async () => {
+  const data = await fetchData(`/slideshow-admin`);
+  const container = document.getElementById('ajax-container');
+  container.innerHTML = data
+})
+
+
+
 const form = document.getElementById('photoUploadForm');
-const element = document.getElementById('formFile');
+// const element = document.getElementById('formFile');
 document.getElementById('submitButton').style.width = '180px';
 
-element.addEventListener("change", updateFileText);
+// element.addEventListener("change", updateFileText);
 
 function updateFileText() {
   let fileNames = ""
@@ -23,7 +31,7 @@ async function submitForm(form) {
   const formData = new FormData(form);
 
   try {
-    const response = await fetch("/post-slideshow", {
+    const response = await fetch("/post-add-slideshow", {
       method: "POST",
       body: formData,
     });
@@ -43,4 +51,24 @@ form.addEventListener("submit", (event) => {
   document.getElementById('submitButton').innerHTML = "Processing...";
   event.preventDefault();
   submitForm(form);
-}); 
+});
+
+async function fetchData(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const r = await response.text();
+    return new Promise((resolve, reject) => {
+      if (r) {
+        resolve(r)
+      } else {
+        reject(new Error('No data received'));
+      }
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
+}
