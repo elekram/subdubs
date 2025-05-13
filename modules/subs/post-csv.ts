@@ -62,20 +62,18 @@ async function StoreCsv(fileName: string, data: Uint8Array) {
 }
 
 function getSuccessBody(s: string) {
-  return `<div class="alert alert-success" role="alert">
+  return `<div class="container-fluid"><div class="alert alert-success" role="alert">
   <h4 class="alert-heading">File Uploaded Successfully</h4>
   <p>${s}</p>
-  <hr>
-  <p class="mb-0">You will be redirected in just a moment.</p>
-</div>`
+</div></div>`
 }
 
 function getErrorBody(error: string) {
-  return `<div class="alert alert-danger" role="alert">
+  return `<div class="container-fluid"><div class="alert alert-danger" role="alert">
   <h4 class="alert-heading">File Upload Failed</h4>
   <p>${error}.</p>
-  <p>Contact your systems administrator.</p>
+  <p>Please try again.</p>
   <hr>
-  <p class="mb-0">You will be redirected in just a moment.</p>
-</div>`
+  <p>Or contact your systems administrator.</p>
+</div></div>`
 }
