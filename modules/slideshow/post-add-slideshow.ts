@@ -52,9 +52,9 @@ async function addSlideshow(
 }
 
 function getErrorBody(error: string) {
-  return `<div class="alert alert-danger" role="alert">
+  return `<div class="container-fluid"><div class="alert alert-danger" role="alert">
   <h4 class="alert-heading">Create Slideshow Failed</h4>
   <p>${error}.</p>
   <p>If unsure, contact your systems administrator.</p>
-</div>`
+</div></div>`
 }

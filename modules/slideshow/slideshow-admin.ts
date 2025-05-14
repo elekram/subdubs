@@ -9,11 +9,11 @@ export function getSlideshowAdmin(ctx: Context): string {
             <div class="card-header text-bg-secondary">
               <div class="div-left">Slideshow Creator</div>
             </div>
-            <div class="card-body">
+            <div class="card-body  bg-light">
             <form id="newSlideshowForm" name="newSlideshowForm" method="post" enctype='multipart/form-data'>
-            <div>Add Slideshow</div>
+            
             <div></br></div>
-            <table class="table table-default">
+            <table class="table table-light">
               <tr>
                 <td class="ctl-width">
                   <label for="keyInput">🔐 Key</label>
@@ -33,18 +33,13 @@ export function getSlideshowAdmin(ctx: Context): string {
             </table>    
                 <div class=" mb-3">    
                   <br>
-                  
                 </div>
               <button type="submit" id="submitButton" class="btn btn-primary float-end">Create Slideshow
               </button>
               </form>
             </div>
+            <div id="response-container"></div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 mb-4">
-          <div id="response-container"></div>
-        </div>
-    </div>`
+      </div>`
 }

@@ -64,7 +64,7 @@ async function submitNewSlideshowForm(form) {
   }
 
   document.getElementById('submitButton').disabled = false;
-  document.getElementById('submitButton').innerHTML = "Upload CSV Files";
+  document.getElementById('submitButton').innerHTML = "Create Slideshow";
 }
 
 async function getSubsAdmin() {
