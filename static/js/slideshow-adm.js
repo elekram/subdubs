@@ -46,13 +46,6 @@ async function submitForm(form) {
   document.getElementById('submitButton').innerHTML = "Upload CSV Files";
 }
 
-form.addEventListener("submit", (event) => {
-  document.getElementById('submitButton').disabled = true;
-  document.getElementById('submitButton').innerHTML = "Processing...";
-  event.preventDefault();
-  submitForm(form);
-});
-
 async function fetchData(url) {
   try {
     const response = await fetch(url);

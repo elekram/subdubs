@@ -18,7 +18,7 @@ export async function PostSlideshow(ctx: Context) {
   }
 
   if (!slideshowName || slideshowName === '') {
-    return ctx.response.body = getErrorBody('Slideshow name missing')
+    return ctx.response.body = getErrorBody('Slideshow name is required.')
   }
 
   const res = await addSlideshow(
@@ -46,17 +46,15 @@ async function addSlideshow(
     RETURNING slideshow_id, slideshow_name
   `
   } catch (e) {
-    console.error('Error storing CSV - ', e)
-    return new Error('Error storing CSV - ' + e)
+    console.error('Error creating slideshow - ', e)
+    return new Error('Error creating slideshow - ' + e)
   }
 }
 
 function getErrorBody(error: string) {
   return `<div class="alert alert-danger" role="alert">
-  <h4 class="alert-heading">File Upload Failed</h4>
+  <h4 class="alert-heading">Create Slideshow Failed</h4>
   <p>${error}.</p>
-  <p>Contact your systems administrator.</p>
-  <hr>
-  <p class="mb-0">You will be redirected in just a moment.</p>
+  <p>If unsure, contact your systems administrator.</p>
 </div>`
 }

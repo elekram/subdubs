@@ -11,6 +11,7 @@ import { GetSlideShow } from '../modules/slideshow/get-slideshow.ts'
 import { PostSlideshow } from '../modules/slideshow/post-add-slideshow.ts'
 import { getSubsAdmin } from '../modules/subs/subs-admin.ts'
 import { getSlideshowAdmin } from '../modules/slideshow/slideshow-admin.ts'
+import { listSlideshows } from '../modules/slideshow/list-slideshows.ts'
 
 const router = new Router()
 
@@ -61,8 +62,11 @@ router
   .post('/post-add-slideshow', async (ctx) => {
     await PostSlideshow(ctx)
   })
+  .get('/list-slideshows', async (ctx) => {
+    ctx.response.body = await listSlideshows(ctx)
+  })
   .get('/(.*)', (ctx) => {
-    ctx.response.body = getBaseHtml()
+    ctx.response.body = ctx.response.body = getBaseHtml()
   })
 
 export default router

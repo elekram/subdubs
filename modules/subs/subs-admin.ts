@@ -13,7 +13,7 @@ export function getSubsAdmin(ctx: Context): string {
         <form id="csvUploadForm" name="csvUploadForm" method="post" enctype='multipart/form-data'>
         <label for="formFile" class="form-label">Upload 'Teacher Replacements Report' (csv)</label>
         <div></br></div>
-          <label for="passwordInput">🔐 Upload Key</label>
+          <label for="passwordInput">🔐 Key</label>
           <input id="passwordInput" name="passwordInput" type="password">
           
             <div class=" mb-3">    

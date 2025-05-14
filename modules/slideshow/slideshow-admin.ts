@@ -1,16 +1,16 @@
 import { Context } from '@oak/oak/context'
 
 export function getSlideshowAdmin(ctx: Context): string {
-  return `    <div class="container-fluid">
+  return `<div class="container-fluid">
       <br>
       <div class="row">
         <div class="col-sm-12 mb-4">
           <div class=" card">
-            <div class="card-header">
+            <div class="card-header text-bg-secondary">
               <div class="div-left">Slideshow Creator</div>
             </div>
             <div class="card-body">
-            <form id="photoUploadForm" name="photoUploadForm" method="post" enctype='multipart/form-data'>
+            <form id="newSlideshowForm" name="newSlideshowForm" method="post" enctype='multipart/form-data'>
             <div>Add Slideshow</div>
             <div></br></div>
             <table class="table table-default">

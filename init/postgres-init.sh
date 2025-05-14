@@ -19,7 +19,8 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 		slideshow_name text,
 		file_name text,
 		file bytea,
-		creatio timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+		upload_date timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		UNIQUE (slideshow_name)
 	);
 	SET timezone = 'Australia/Sydney';
 EOSQL

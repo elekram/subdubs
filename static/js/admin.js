@@ -20,17 +20,51 @@ function addMenuListeners() {
   })
 
   document.getElementById('slideshow-admin').addEventListener('click', async (e) => {
-    await getSlideshowadmin()
+    await getSlideshowAdmin()
   })
 }
 
-async function getSlideshowadmin() {
+async function getSlideshowAdmin() {
   const container1 = document.getElementById('ajax-container-1');
   const container2 = document.getElementById('ajax-container-2');
   container1.innerHTML = ""
   container2.innerHTML = ""
   const data = await fetchData(`/get-slideshow-admin`);
   container1.innerHTML = data
+
+  const slideshowList = await fetchData(`/list-slideshows`);
+  container2.innerHTML = slideshowList
+
+  const form = document.getElementById('newSlideshowForm');
+  document.getElementById('submitButton').style.width = '180px';
+
+  form.addEventListener("submit", (event) => {
+    document.getElementById('submitButton').disabled = true;
+    document.getElementById('submitButton').innerHTML = "Processing...";
+    event.preventDefault();
+    submitNewSlideshowForm(form);
+  });
+
+
+}
+
+async function submitNewSlideshowForm(form) {
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch("/post-add-slideshow", {
+      method: "POST",
+      body: formData,
+    });
+    console.log("response.status =", response.status)
+    const responseContainer = document.getElementById('response-container');
+    responseContainer.innerHTML = await response.text();
+  } catch (e) {
+    console.error(e);
+  }
+
+  document.getElementById('submitButton').disabled = false;
+  document.getElementById('submitButton').innerHTML = "Upload CSV Files";
 }
 
 async function getSubsAdmin() {

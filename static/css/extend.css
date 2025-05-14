@@ -56,6 +56,10 @@ td.ctl-width{
   cursor: pointer;
 }
 
+.bg-color-col{
+  background-color: brown;
+}
+
 .slider-inner {
   display: flex;
   justify-content: center;
