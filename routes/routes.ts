@@ -1,3 +1,4 @@
+import { type RouterContext } from '@oak/oak/router'
 import { Router } from 'jsr:@oak/oak/router'
 import { GetSubsNavBar } from '../modules/subs/get-subs-navbar.ts '
 import { GetSplash } from '../html/get-splash.ts'
@@ -12,6 +13,7 @@ import { PostSlideshow } from '../modules/slideshow/post-add-slideshow.ts'
 import { getSubsAdmin } from '../modules/subs/subs-admin.ts'
 import { getSlideshowAdmin } from '../modules/slideshow/slideshow-admin.ts'
 import { listSlideshows } from '../modules/slideshow/list-slideshows.ts'
+import { editSlideshow } from '../modules/slideshow/edit-slideshow.ts'
 
 const router = new Router()
 
@@ -47,6 +49,9 @@ router
   // .get('/slideshow-admin', async (ctx) => {
   //   await GetSlideshowAdmin(ctx)
   // })
+  .get('/edit-slideshow/:slideshowId', async (ctx: RouterContext<string>) => {
+    ctx.response.body = await editSlideshow(ctx)
+  })
   .get('/get-slideshow', async (ctx) => {
     await GetSlideShow(ctx)
   })

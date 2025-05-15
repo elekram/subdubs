@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 const form = document.getElementById('photoUploadForm');
-// const element = document.getElementById('formFile');
+const element = document.getElementById('formFile');
 document.getElementById('submitButton').style.width = '180px';
 
-// element.addEventListener("change", updateFileText);
+element.addEventListener("change", updateFileText);
 
 function updateFileText() {
   let fileNames = ""

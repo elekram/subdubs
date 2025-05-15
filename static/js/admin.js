@@ -45,8 +45,60 @@ async function getSlideshowAdmin() {
     submitNewSlideshowForm(form);
   });
 
-
+  editSlideshowButton = document.getElementById('editSlideshow')
+  editSlideshowButton.addEventListener('click', async (e) => {
+    await editSlideshow()
+  })
 }
+
+async function editSlideshow() {
+  const slideshowId = editSlideshowButton.getAttribute('data-slideshowid')
+  const data = await fetchData(`/edit-slideshow/${slideshowId}`);
+  const container1 = document.getElementById('ajax-container-1');
+  const container2 = document.getElementById('ajax-container-2');
+  container2.innerHTML = ""
+  container1.innerHTML = data
+
+  document.getElementById('submitPhotosButton').style.width = '180px';
+  const form = document.getElementById('photoUploadForm');
+  const element = document.getElementById('formFile');
+  element.addEventListener("change", updateFileText);
+
+  function updateFileText() {
+    let fileNames = ""
+    let totalSize = 0
+    for (const f of element.files) {
+      totalSize += f.size
+      fileNames += f.name + ', '
+    }
+
+    if (totalSize > 25000000) {
+      alert('too big')
+      return
+    }
+    document.getElementById('fileLabel').innerHTML = fileNames
+  }
+}
+
+async function submitNewPhotosForm(form) {
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch("/post-add-slideshow", {
+      method: "POST",
+      body: formData,
+    });
+    console.log("response.status =", response.status)
+    const responseContainer = document.getElementById('response-container');
+    responseContainer.innerHTML = await response.text();
+  } catch (e) {
+    console.error(e);
+  }
+
+  document.getElementById('submitButton').disabled = false;
+  document.getElementById('submitButton').innerHTML = "Create Slideshow";
+}
+
 
 async function submitNewSlideshowForm(form) {
   const formData = new FormData(form);
